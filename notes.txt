@@ -1,0 +1,321 @@
+work flow 
+   - add backend route with the controller 
+      -  go to frontend deal with the state (MUTATIONS / QUERIES)
+          -  go to screen and implement the actions
+         *******************
+        the slice returns the
+         get/ put / post data
+         back through the 
+         useGetUsersQuery();
+         *******************
+
+1 -- create frontend / backend folder structure 
+2 -- get setup for git 
+        -- when we use create react app it creates a git repo folder 
+            in a .git folder within the 'frontend' folder
+        -- within fronted terminal type ls -a to see all folders including the hidden ones
+           we see the .git ** we need to remove this folder **
+           WE REMOVE THIS WITH rm -rf .git
+        -- check it is gone with ls -a 
+        -- lastly take the .gitignore from frontend and place in the root
+        -- git igpnore goes in the root as we have a backend / uploads folder in the ROOT dir
+        -- within the gitignore file 
+            - remove the slash from node_modules
+            - add .env to gitignore
+        -- initilize a git repo ** IN THE ROOT **
+            1 - git init  (ls -a to see the .git in the root)
+            2 - go to gothub and create a new repo
+            3 - copy the code from '…or push an existing repository from the command line'
+            4 - in the terminal type    
+                    a - git add .
+                    b - git commit -m 'comment'
+                    c - past in code git remote add origin 
+                    d - git push origin <----> (normally main or checkout first)
+
+
+3 -- set up server 
+    -- change from common js to es module 
+        -- go to package.json and add a type module value 
+    -- create a server side package .json ** IN THE ROOT **
+    -- install dependencies such as express and nodemon
+    -- clg hello world to test
+    -- as using ES MOULES WE NEED TO ADD .JS ON THE FROM 
+
+
+4 -- install dotenv as a -D 'DEV DEPENDENCY'
+**  ALWAYS RESTART SERVER WHEN DOT ENV VARIABLES ARE CHANGED **
+
+        -- install axios in the frontend
+
+
+5 -- install mongoose in the root 
+     -- in backend create config file with file  db.js
+     -- Calling connectDB from server 
+     -- needs to be called in server file as it is at the begining of app
+
+6 -- data seedding -- good for prototyping and testing 
+        -- remove ids from dummy data 
+        -- connect user to product in seed script
+        -- new file in data of users.js
+        -- create script to take products and users and insert into the database
+        -- create a file in backend folder called seeder
+            process.argv
+               -- use indexes to create a command of -d
+               use commands:
+               a - insert 
+               b - clear database out
+                    -- "data:destroy": "node backend/seeder -d"
+
+7 --  postman -- makes the http requests to the backnd while we do not have any frontend to use
+        -- first create a new workspace
+        -- then create an eviroment with enviroment VARIABLES
+        -- make baseURL variable http://localhost:5001/api/ = REST
+        -- in the dropdown make sure we say we want to use the proshop environment 
+            AND CLICK SAVE
+        -- then go to APIS > create new api
+        -- set up requests in a collection 
+            - products, users, collections
+            -- under products ADD NEW REQ (GET, POST, PUT ETC)
+            --- {{baseURL}}/products
+            ---- {{baseURL}}/products/:id
+
+
+8 --  Routes 
+    -- express has a Router we can use to put our
+       routes in seperate files
+            create files in BE
+                - routes.js  
+
+                create async handler before wwe fetch data from database 
+                this is an elegant error handling solution
+
+        - create new folder in backend 'middleware'
+
+
+9 -- Error middleware by if call next(err) this will bypass all other middleware and call the next err middleware
+    this basicly SKIPS all other middleware as there will be an error
+
+    asynchronous errors need to have the error middleware 
+    if we do not have any custom error middleware then the 
+    UGLY custom html middleware will be hit
+
+    anything passed to the next('cheese') will be percieved as an error and 
+    we then get back the custom html error
+
+    if next() is empty it will then call the next middlewart the res
+    the default err middleware runs at the end of the stack and sends the html back to  the client 
+
+    err middleware always at the end of the middleware stack
+
+    contact default err middleware by calling next(err) 
+
+
+
+10--  REDUX
+            install redux npm install @reduxjs/toolkit react-redux
+11--            - https://redux.js.org/introduction/installation
+                
+                * Using dispatch() allows the use of middleware. If we are making async operations, 
+                * it needs to go through dispatch so that the middleware can intercept and handle 
+                * those actions appropriately. It also allows you to centralize control over state changes.
+                * https://redux.js.org/api/store#dispatchaction
+                * https://redux.js.org/api/store#dispatchaction
+                * https://insomnia.rest/
+                
+
+
+12-- PREPARE ALL SKELETON ROUTES IN ONE GO
+            skeleton out all routes that just 
+            return a simple striing 
+            -- create userRoutes.js
+            -- create userController.js
+
+    Test in postman  --  test all routes in postman (get back the string)
+        -- add new collection (folder)
+        -- click make new requset (will open up a req screen)
+
+13-- Set express middleware to handle json
+            -- middleware for parsing body data
+
+                    !!Promise.resolve(false) // true
+                    !!Promise.reject(false) // true
+                    !!Promise.reject(true) // true
+
+            -- If you don't await, then by using the && operator you are type coercing a Promise to a boolean value, which will be true.
+            -- we do not have to use a promise as bcrypt already returns a promis
+
+
+14-- JSON web token
+                -- install in the backend which will be the root
+                -- make the cookie in server and test with postman  
+                -- we can see the cookie sent in postman 
+                    look in the response headers in POSTMAN to see cookie data 
+
+
+            -- once we log in the coockie gets sent along with every req 
+            -- create a jwt and set in a cookie
+            -- install a cookie parser middlewart
+
+15-- FRONT END AUTH
+
+
+            -- authSlice adds a user to local storage 
+                this tells the frontend there is a 
+                vallidated user
+
+               --  we do not add products and users api to the slice 
+               -- is they are childs of the api slice 
+               -- injecting endpoints so this makes it a child
+
+            -- check in console / application / cookies form the cookie
+            -- the HTTP will be checked 
+            -- user in state and local storage 
+
+            bug fix for trusted user
+            https://github.com/bradtraversy/proshop-v2#bug-token-and-cookie-expiration-not-handled-in-frontend
+            https://github.com/bradtraversy/proshop-v2#faq-how-do-i-use-vite-instead-of-cra
+https://blog.logrocket.com/implementing-secure-password-reset-node-js/
+https://expressjs.com/en/api.html
+https://www.youtube.com/watch?v=5yEG6GhoJBs
+
+password also be hashed on the client side?
+ No as any application taking user credentials, should/would be served over https with a valid ssl certificate.
+So as long site is served over https then there is no risk of anyone intercepting and decrypting the communication.
+Hope that answers it for you.
+
+
+
+
+16-- LOGOUT
+        set funcntions in usersApiSlice and authSlice
+        
+
+
+17-- REGISTER USER FRONTEND 
+        1 -- users api slice   register: builder.mutation
+        2 -- dispatch from the front end set credentials     dispatch(setCredentials({ ...res }))
+        3 -- token is sent from the backend and stays in browser until destroyed
+        4 --
+        5 --
+        6 --
+
+
+18-- PAYPAL 
+    -- wrap the app in the paypal provider
+
+
+
+19-- CREATE NEW PRODUCT 
+    -- set up routes and controller backend 
+    -- add protect and admin to routes 
+    -- add the builder mutation to the slice in the frontend we do not pass in any data as we are creating 
+    -- invalidate tags so it does not cache and we get fresh data
+
+
+20-- UPDATE PRODUCT 
+        -- create update product controller
+        -- create the builder.mutation in product slice 
+        --
+
+
+    * Usually you would unwrap an AsyncThunk when you need to wait for the resolution of the Promise at component level before you do something, like redirecting a user, or when you need to do something at component level with the resolution of the Promise, like show a message with some information from the Promise returned from your AsyncThunk.
+    * Hope that answers it for you, let me know.
+    * 
+    * 
+    * The mutation returns a Promise so we can await the resolution of that before navigating the user, but here we don't need the error or success payload from the mutation, so we don't need to unwrap it.
+    * 
+    * providesTags allows you to 'tag' the cached data, basically give some information about whatever the data is so you can identify it later.
+    * 
+    * invalidatesTags can then specify which 'tags' you identified with your providesTags should be refreshed and the associated tags data be updated in the cache.
+    * 
+    *
+    * https://redux-toolkit.js.org/rtk-query/overview
+    * https://redux-toolkit.js.org/rtk-query/api/createApi#providestags
+    * https://redux-toolkit.js.org/rtk-query/api/createApi#providestags
+
+    
+21-- UPLOAD IMAGE WITH MULTER
+    -- this is the go to for js and uploading images 
+    -- we can use amazon buckets but here we are using the server
+    
+    -- create upload routes.js 
+        - install, multer, path, express etc
+        - create the route in uploadRoutes.js
+        -- create the app.use('/uploads', file) in server 
+        --- create the api call in the frontend product api slice
+        ---- go to product edit screen and bring in useUploadProductImageMutation
+        -----
+
+                I assume you are a Windows user?
+                The backslash is the path delimiter on Windows, so is correct.
+                Under the hood Multer is using path.resolve to create the file path and a backslash is the file delimitter on Windows.
+                So resolving the system path will use the system delimitter i.e. the backslash on Windows.
+                So in production you will deploy to a Linux server and uploads will use the forward slash in the path.
+
+
+22--  DELETE PRODUCT
+
+            -- deltete controller 
+                -- delete route
+                    -- add delete builder mutation to productSliceApi.js
+
+work flow 
+   - add backend route with the controller 
+      -  go to frontend deal with the state 
+          -  go to screen and implement the actions
+
+23-- UPATE USER     
+
+        -- two slices of code 
+            -- QUERY to get the user    
+            -- MUTATION to update the user
+
+24-- PAGINATE 
+
+        -- change data so that we get back an object 
+            - products
+            - page that we are on 
+            - total number of pages 
+        alter frontend to take into account the object 
+
+25 SEARCH BAR
+
+            -- keyword wuery goes in  params 
+            -- in productsApi slice pass in keyword
+               next to params
+
+            -- go to home screen in the params check for keyword
+            -- go to index.js and update the routes
+            
+            -- need to add route for search AND page number 
+                as well as the individual routes
+                as we need pagination with our filtered results too
+            
+            NOW we can test wit / serach / phone 
+
+        -- Add it to the pagination
+            if we do not do this paginaiton will not work on filterd results
+            
+
+    -- CAROUSEL
+        -- create new route in the backend so 
+           we get the top 3 products 
+           sort by rating 
+            copy fetch aproduct id
+            got to routes and set up a new route to execute this file
+
+        -- create a query in the frontend slice 
+
+
+26 -- DYNAMIC PAGE TITLES 
+        -- We use react HELMET ASYNC IN FRONTED  INSTALL
+        -- wrap the whole app with helmet 
+        
+
+
+
+unwrap():
+This is often used with tools like Redux 
+\Toolkit's createAsyncThunk, which returns a 
+promise that can be "unwrapped" to get the actual 
+payload or error.
